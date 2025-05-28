@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Cart - Green Haven</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Font Awesome CDN for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Mobile menu styles */
+    @media (max-width: 768px) {
+      #navbar {
+        position: absolute;
+        top: 70px;
+        right: -100%;
+        background-color: #2e7d32;
+        width: 20%;
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+        transition: right 0.3s ease-in-out;
+        z-index: 999;
+      }
+
+      #navbar.active {
+        right: 0;
+      }
+
+      .mobile-menu-button {
+        display: block;
+        font-size: 26px;
+        background: none;
+        border: none;
+        color: #fff;
+        cursor: pointer;
+      }
+    }
+
+    @media (min-width: 769px) {
+      .mobile-menu-button {
+        display: none;
+      }
+
+      #navbar {
+        position: static;
+        flex-direction: row;
+      }
+    }
+
+    /* Cart specific styles */
+    body {
+      font-family: 'Arial', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f9f9f9;
+    }
+    
+    .cart-container {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 20px;
+      background: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 8px;
+    }
+    
+    .cart-header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #2e7d32;
+    }
+    
+    .cart-items {
+      margin-bottom: 30px;
+    }
+    
+    .cart-item {
+      display: flex;
+      align-items: center;
+      padding: 15px 0;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .cart-item img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      margin-right: 20px;
+      border-radius: 4px;
+    }
+    
+    .item-details {
+      flex-grow: 1;
+    }
+    
+    .item-details h3 {
+      margin: 0 0 5px 0;
+      color: #2e7d32;
+    }
+    
+    .item-price {
+      font-weight: bold;
+      color: #2e7d32;
+    }
+    
+    .remove-item {
+      background: none;
+      border: none;
+      color: #ff4444;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+    
+    .cart-summary {
+      background: #f5f5f5;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    
+    .total {
+      font-size: 1.2rem;
+      font-weight: bold;
+      border-top: 1px solid #ddd;
+      padding-top: 10px;
+      margin-top: 10px;
+    }
+    
+    .checkout-btn {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background: #2e7d32;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background 0.3s;
+    }
+    
+    .checkout-btn:hover {
+      background: #1b5e20;
+    }
+    
+    .empty-cart {
+      text-align: center;
+      padding: 40px 0;
+    }
+    
+    .empty-cart i {
+      font-size: 3rem;
+      color: #ccc;
+      margin-bottom: 20px;
+    }
+    
+    .continue-shopping {
+      display: inline-block;
+      margin-top: 20px;
+      color: #2e7d32;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    
+    .continue-shopping:hover {
+      text-decoration: underline;
+    }
+    
+    @media (max-width: 768px) {
+      .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .cart-item img {
+        margin-bottom: 10px;
+      }
+      
+      #navbar {
+        width: 50%; /* More appropriate width for mobile */
+      }
+    }
+  </style>
+</head>
+<body>
+  <section id="header">
+    <a href="#"><img src="images/leaf.png" class="logo" alt="Green Haven leaf logo"></a>
+    <button class="mobile-menu-button" onclick="toggleMenu()">☰</button>
+
+    <nav>
+      <ul id="navbar">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="products.html">Products</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="cart.html"><i class="fa fa-cart-plus" aria-hidden="true"></i> <span id="cart-count" class="cart-count">0</span></a></li>
+      </ul>
+    </nav>
+  </section>
+  
+  <main class="cart-container">
+    <div class="cart-header">
+      <h1>Your Shopping Cart</h1>
+    </div>
+    
+    <div class="cart-items" id="cart-items-container">
+      <!-- Cart items will be dynamically inserted here -->
+    </div>
+    
+    <div class="cart-summary" id="cart-summary">
+      <!-- Summary will be dynamically inserted here -->
+    </div>
+    
+    <a href="products.html" class="continue-shopping">
+      <i class="fas fa-arrow-left"></i> Continue Shopping
+    </a>
+  </main>
+  
+  <footer>
+    <div class="footer-container">
+      <div class="footer-col">
+        <img src="images/leaf.png" alt="Green Haven logo" width="50">
+        <p>Bringing nature into your home since 2022</p>
+      </div>
+      <div class="copyright">
+        <p>&copy; 2023 Green Haven. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Load cart from localStorage
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    updateCartCount();
+    
+    // DOM elements
+    const cartItemsContainer = document.getElementById('cart-items-container');
+    const cartSummary = document.getElementById('cart-summary');
+    
+    // Render cart on page load
+    document.addEventListener('DOMContentLoaded', renderCart);
+    
+    function renderCart() {
+      // Update cart count in header
+      updateCartCount();
+      
+      // Clear previous content
+      cartItemsContainer.innerHTML = '';
+      
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = `
+          <div class="empty-cart">
+            <i class="fas fa-shopping-cart"></i>
+            <h2>Your cart is empty</h2>
+            <p>Looks like you haven't added any items to your cart yet.</p>
+          </div>
+        `;
+        
+        cartSummary.innerHTML = '';
+        return;
+      }
+      
+      // Render each cart item
+      cart.forEach((item, index) => {
+        const cartItemElement = document.createElement('div');
+        cartItemElement.className = 'cart-item';
+        cartItemElement.innerHTML = `
+          <img src="${item.img || 'images/leaf.png'}" alt="${item.name}">
+          <div class="item-details">
+            <h3>${item.name}</h3>
+            <p class="item-price">${item.price}</p>
+          </div>
+          <button class="remove-item" data-index="${index}">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        `;
+        cartItemsContainer.appendChild(cartItemElement);
+      });
+      
+      // Add event listeners to remove buttons
+      document.querySelectorAll('.remove-item').forEach(button => {
+        button.addEventListener('click', function() {
+          const index = parseInt(this.getAttribute('data-index'));
+          removeFromCart(index);
+        });
+      });
+      
+      // Calculate and render summary
+      renderSummary();
+    }
+    
+    function renderSummary() {
+      let subtotal = 0;
+      
+      // Calculate subtotal by extracting numeric values from price strings
+      cart.forEach(item => {
+        const priceValue = parseFloat(item.price.replace(/[^0-9.]/g, ''));
+        subtotal += priceValue;
+      });
+      
+      cartSummary.innerHTML = `
+        <div class="summary-row">
+          <span>Subtotal (${cart.length} items)</span>
+          <span>P${subtotal.toFixed(2)}</span>
+        </div>
+        <div class="summary-row">
+          <span>Shipping</span>
+          <span>Free</span>
+        </div>
+        <div class="summary-row total">
+          <span>Total</span>
+          <span>P${subtotal.toFixed(2)}</span>
+        </div>
+        <button class="checkout-btn">Proceed to Checkout</button>
+      `;
+      
+      // Add checkout button event listener
+      document.querySelector('.checkout-btn')?.addEventListener('click', function() {
+        alert('Checkout functionality would go here!');
+        // In a real implementation, this would redirect to a checkout page
+      });
+    }
+    
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      renderCart();
+    }
+    
+    function updateCartCount() {
+      const cartCount = document.getElementById('cart-count');
+      if (cartCount) {
+        cartCount.textContent = cart.length;
+      }
+    }
+    
+    // Mobile menu toggle
+    function toggleMenu() {
+      document.getElementById("navbar").classList.toggle("active");
+    }
+  </script>
+</body>
+</html>
